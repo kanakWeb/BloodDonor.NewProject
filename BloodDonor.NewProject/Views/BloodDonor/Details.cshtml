@@ -1,0 +1,45 @@
+﻿@using BloodDonor.Models
+@model BloodDonorListViewModel
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+<div class="container mt-4">
+    <div class="card shadow-md">
+
+        <div class="row g-0">
+            <div class="col-md-4 text-center p-4">
+
+                @if(!string.IsNullOrEmpty(Model.ProfilePicture))
+                    {
+                        <img src="~/@Model.ProfilePicture" alt="Donor Image" />
+                    }
+                    else
+                    {
+                        <img src="/images/default-avatar.png" alt="Default Image" style="object-fit:cover;" />
+                    }
+            </div>
+
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h3 class="modal-title">@Model.FullName</h3>
+                    <p> <strong>BloodGroup :</strong>@Model.BloodGroup</p>
+                    <p> <strong>contact :</strong>@Model.ContactNumber</p>
+                    <p> <strong>Email :</strong>@Model.Email</p>
+                    <p> <strong>Address :</strong>@Model.Address</p>
+                    <p> <strong>Age :</strong>@Model.Age</p>
+                    <p> <strong>LastDonationDate :</strong>@Model.LastDonationDate</p>
+                    <p> <strong>IsEligible :</strong><span class="badge@(Model.IsEligible ? "bg-info" : "bg-success")">@Model.IsEligible</span></p>
+
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning"> Edit</a>
+                    <a asp-action="Index"  class="btn btn-secondary">Back to List</a>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

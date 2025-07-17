@@ -1,12 +1,12 @@
 ﻿@using BloodDonor.Models
-@model List<BloodDonorEntity>
+@model List<BloodDonorListViewModel>
 @{
     ViewData["Title"] = "Blood Donor List";
 }
 <h2>Blood DOnor List</h2>
 
 <form method="get" class="row g-2 mb-3">
-    <div class="col-md-4">
+    <div class="col-md-3">
         <select name="bloodGroup" class="form-select">
             <option value="">All Blood Groups</option>
             @foreach (var bg in Enum.GetNames(typeof(BloodGroup)))
@@ -15,10 +15,19 @@
             }
         </select>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
         <input type="text" name="address" class="form-control" placeholder="Search by Address"/>
     </div>
-    <div class="col-md-4">
+
+    <div class="col-md-3">
+        <select   name="isEligible" class="form-select">
+            <option value="">All</option>
+            <option value="true">Eligible</option>
+            <option value="false">Not Eligible</option>
+        </select>
+
+    </div>
+    <div class="col-md-3">
         <button type="submit" class="btn btn-primary">Search</button>
         </div>
 </form> 
@@ -29,10 +38,10 @@
             <td>Profile</td>
             <th>Donor Name</th>
             <th>Blood Group</th>
-            <th>Weight</th>
             <th>DateOfBirth</th>
             <th>Address</th>
             <th>Last Donation Date</th>
+            <th>Is Eligible</th>
             <th class="text-center">Actions</th>
         </tr>
     </thead>
@@ -54,12 +63,22 @@
                 </td>
                 <td>@donor.FullName</td>
                 <td>@donor.BloodGroup</td>
-                <td>@donor.Weight</td>
-                <td>@donor.DateOfBirth</td>
+                <td>@donor.Age</td>
                 <td>@donor.Address</td>
                 <td>@donor.LastDonationDate</td>
                 <td>
-                    <a href="@Url.Action("Details", "BloodDonorEntity", new { id = donor.Id })" class="btn btn-primary">View</a>
+                    @if (donor.IsEligible)
+                    {
+                        <span class="bg-success border-0 p-1  text-light rounded-3">Eligible</span>
+
+                    }
+                    else
+                    {
+                        <span class="bg-danger border-0  p-1  text-light rounded-3">Eligible</span>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@donor.Id" class="btn btn-warning"> View</a>
                     <a href="@Url.Action("Edit", "BloodDonorEntity", new { id = donor.Id })" class="btn btn-primary">Edit</a>
                     <a href="@Url.Action("Delete", "BloodDonorEntity", new { id = donor.Id })" class="btn btn-danger">Delete</a>
                 </td>

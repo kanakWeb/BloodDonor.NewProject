@@ -17,7 +17,7 @@ namespace BloodDonor.Models
         [EmailAddress]
         public required string Email { get; set; }
         public required BloodGroup BloodGroup { get; set; }
-        [Range(50, 150, ErrorMessage = "Age must be between 50 and 150 years.")]
+        [Range(45, 200, ErrorMessage = "Age must be between 50 and 150 years.")]
         [Display(Name ="Weight (kg)")]
         public float Weight { get; set; }
         public DateTime? LastDonationDate { get; set; }

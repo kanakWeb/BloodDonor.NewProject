@@ -19,7 +19,7 @@ namespace BloodDonor.NewProject.Controllers
             _env = env;
         }
 
-        public IActionResult Index(string bloodGroup, string address)
+        public IActionResult Index(string bloodGroup, string address, bool? isEligible)
         {
             IQueryable<BloodDonorEntity> query = _context.BloodDonors;
 
@@ -28,8 +28,24 @@ namespace BloodDonor.NewProject.Controllers
 
            if(!string.IsNullOrEmpty(address))
                 query = query.Where(d => d.Address != null && d.Address.Contains(address));
-
-                var donors =query.ToList();
+        
+                var donors =query.Select(d=>new BloodDonorListViewModel
+                {
+                    Id = d.Id ?? 0,
+                    FullName = d.FullName ?? "Unknown",
+                    ContactNumber = d.ContactNumber,
+                    Age = DateTime.Now.Year - d.DateOfBirth.Year,
+                    Email = d.Email,
+                    BloodGroup = d.BloodGroup.ToString(),
+                    LastDonationDate=d.LastDonationDate.HasValue ? $"{(DateTime.Today-d.LastDonationDate.Value).Days} days ago" : "Never",
+                    Address = d.Address,
+                    ProfilePicture = d.ProfilePicture, // You can set this to the path of the profile picture if needed
+                    IsEligible = (d.Weight>45 && d.Weight<200) && (d.LastDonationDate == null || (DateTime.Now - d.LastDonationDate.Value).TotalDays >= 90) // Assuming eligibility is based on last donation date
+                }).ToList( );
+            if (isEligible.HasValue)
+            {
+                donors = donors.Where(x => x.IsEligible == isEligible).ToList();
+            }
                 return View(donors);
         }
 
@@ -81,6 +97,30 @@ namespace BloodDonor.NewProject.Controllers
                 return RedirectToAction("Index");
             }
           
-        
+        public IActionResult Details(int id)
+        {
+            var donor=_context.BloodDonors.FirstOrDefault(d => d.Id == id);
+            if (donor == null)
+            {
+                return NotFound();
+            }
+            var donorView = new BloodDonorListViewModel
+            {
+                
+                Id = donor.Id,
+                ProfilePicture = donor.ProfilePicture,
+                FullName = donor.FullName,
+                BloodGroup = donor.BloodGroup.ToString(),
+                ContactNumber = donor.ContactNumber,
+                Email = donor.Email,
+                Address = donor.Address,
+                Age = DateTime.Now.Year - donor.DateOfBirth.Year,
+                LastDonationDate = donor.LastDonationDate.HasValue ? $"{(DateTime.Today - donor.LastDonationDate.Value).Days}days ago" : "Never",
+                IsEligible = (donor.Weight > 45 && donor.Weight < 200) && (donor.LastDonationDate == null || (DateTime.Now - donor.LastDonationDate.Value).TotalDays >= 90)
+                
+            };
+
+            return View(donorView);
+        }
     }
 }

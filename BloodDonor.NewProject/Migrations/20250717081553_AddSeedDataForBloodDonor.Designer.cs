@@ -4,6 +4,7 @@ using BloodDonor.NewProject.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BloodDonor.NewProject.Migrations
 {
     [DbContext(typeof(BloodDonorDbContext))]
-    partial class BloodDonorDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250717081553_AddSeedDataForBloodDonor")]
+    partial class AddSeedDataForBloodDonor
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -67,26 +70,22 @@ namespace BloodDonor.NewProject.Migrations
                         new
                         {
                             Id = 1,
-                            Address = "Nepal",
                             BloodGroup = 0,
                             ContactNumber = "1234567890",
                             DateOfBirth = new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "John@gmail.com",
                             FullName = "John Doe",
-                            LastDonationDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Weight = 65f
+                            Weight = 0f
                         },
                         new
                         {
                             Id = 2,
-                            Address = "Pakistan",
                             BloodGroup = 3,
                             ContactNumber = "0987654321",
                             DateOfBirth = new DateTime(1985, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "Jane@gmail.com",
                             FullName = "Jane Smith",
-                            LastDonationDate = new DateTime(2024, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Weight = 68f
+                            Weight = 0f
                         });
                 });
 
