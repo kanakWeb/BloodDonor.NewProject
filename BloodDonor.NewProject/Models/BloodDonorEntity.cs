@@ -9,7 +9,7 @@ namespace BloodDonor.Models
     {
         [Key]
        public int? Id { get; set; }
-        public string? FullName { get; set; }
+        public required string FullName { get; set; }
         [Phone]
         [Length(10,15)]
         public required string ContactNumber { get; set; }
