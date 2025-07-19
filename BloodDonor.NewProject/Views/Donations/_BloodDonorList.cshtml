@@ -1,0 +1,9 @@
+﻿@model BloodDonor.Models.Donation
+
+<div class="form-group">
+    <label asp-for="BloodDonorId" class="control-label"></label>
+    <select asp-for="BloodDonorId" class="form-control" asp-items="ViewBag.DonorList">
+        <option value="">Select Donor</option>
+    </select>
+    <span asp-validation-for="BloodDonorId" class="text-danger"></span>
+</div>
