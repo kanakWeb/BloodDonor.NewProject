@@ -1,4 +1,4 @@
-﻿@using BloodDonor.Models
+﻿@using BloodDonor.NewProject.Models.ViewModel
 @model BloodDonorListViewModel
 @{
     ViewData["Title"] = "Details";
@@ -13,7 +13,7 @@
 
                 @if(!string.IsNullOrEmpty(Model.ProfilePicture))
                     {
-                        <img src="~/@Model.ProfilePicture" alt="Donor Image" />
+                    <img src="~/@Model.ProfilePicture" alt="Donor Image" style="width:250px; height:350px; style="object-fit:cover;" />
                     }
                     else
                     {
@@ -30,7 +30,7 @@
                     <p> <strong>Address :</strong>@Model.Address</p>
                     <p> <strong>Age :</strong>@Model.Age</p>
                     <p> <strong>LastDonationDate :</strong>@Model.LastDonationDate</p>
-                    <p> <strong>IsEligible :</strong><span class="badge@(Model.IsEligible ? "bg-info" : "bg-success")">@Model.IsEligible</span></p>
+                    <p> <strong>IsEligible :</strong><span class="badge@(Model.IsEligible ? "bg-success" : "bg-info")">@Model.IsEligible</span></p>
 
                     <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning"> Edit</a>
                     <a asp-action="Index"  class="btn btn-secondary">Back to List</a>
