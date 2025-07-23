@@ -12,7 +12,10 @@ builder.Services.AddDbContext<BloodDonorDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
 
 builder.Services.AddScoped<IBloodDonorRepository, BloodDonorRepository>();
 builder.Services.AddScoped<IBloodDonorService, BloodDonorService>();
