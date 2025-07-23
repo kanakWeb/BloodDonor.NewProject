@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using BloodDonor.Models;
 using BloodDonor.NewProject.Data;
+using BloodDonor.NewProject.Models.Entities;
 
 namespace BloodDonor.NewProject.Controllers
 {
@@ -104,7 +104,7 @@ namespace BloodDonor.NewProject.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DonationExists(donation.Id))
+                    if (!DonationExists((int)donation.Id))
                     {
                         return NotFound();
                     }
