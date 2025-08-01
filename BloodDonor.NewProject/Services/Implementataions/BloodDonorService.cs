@@ -27,7 +27,7 @@ namespace BloodDonor.NewProject.Services.Implementataions
         public async Task DeleteAsync(int id)
         {
             var donor = await _unitOfWork.BloodDonorRepository.GetDonorByIdAsync(id);
-            if (donor == null)
+            if (donor != null)
             {
                 _unitOfWork.BloodDonorRepository.Delete(donor);
                 await _unitOfWork.SaveAsync();
@@ -49,7 +49,7 @@ namespace BloodDonor.NewProject.Services.Implementataions
 
         public async Task<List<BloodDonorEntity>> GetFilteredDonorsAsync(FilterDonorModel filter)
         {
-            var query = (await _unitOfWork.BloodDonorRepository.GetAllAsync()).AsEnumerable();
+            var query = _unitOfWork.BloodDonorRepository.Query();
 
             if (!string.IsNullOrEmpty(filter.bloodGroup))
                 query = query.Where(d => d.BloodGroup.ToString() == filter.bloodGroup);
@@ -57,24 +57,8 @@ namespace BloodDonor.NewProject.Services.Implementataions
             if (!string.IsNullOrEmpty(filter.address))
                 query = query.Where(d => d.Address != null && d.Address.Contains(filter.address));
 
-           /* var donors = query.Select(d => new BloodDonorListViewModel
-            {
-                Id = d.Id,
-                FullName = d.FullName,
-                ContactNumber = d.ContactNumber,
-                Age = DateTime.Now.Year - d.DateOfBirth.Year,
-                Email = d.Email,
-                BloodGroup = d.BloodGroup.ToString(),
-                LastDonationDate =DateHelper.GetLastDonationDateString(d.LastDonationDate),
-                Address = d.Address,
-                ProfilePicture = d.ProfilePicture, // You can set this to the path of the profile picture if needed
-                IsEligible = (d.Weight > 45 && d.Weight < 200) && (d.LastDonationDate == null || (DateTime.Now - d.LastDonationDate.Value).TotalDays >= 90) // Assuming eligibility is based on last donation date
-            }).ToList();
-            if (filter.isEligible.HasValue)
-            {
-                donors = donors.Where(x => x.IsEligible == filter.isEligible).ToList();
-            }*/
-            return query.ToList();
+          
+            return await query.ToListAsync();
         }
 
         public Task UpdateAsync(BloodDonorEntity donor)
@@ -82,7 +66,7 @@ namespace BloodDonor.NewProject.Services.Implementataions
            _unitOfWork.BloodDonorRepository.Update(donor);
             return _unitOfWork.SaveAsync();
         }
-        public static bool IsEliglible(BloodDonorEntity donor)
+        public static bool IsEligible(BloodDonorEntity donor)
         { 
         
             if (donor.Weight < 45 || donor.Weight > 200)

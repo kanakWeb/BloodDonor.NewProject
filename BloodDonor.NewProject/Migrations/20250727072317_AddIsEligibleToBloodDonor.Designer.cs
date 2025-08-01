@@ -4,6 +4,7 @@ using BloodDonor.NewProject.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BloodDonor.NewProject.Migrations
 {
     [DbContext(typeof(BloodDonorDbContext))]
-    partial class BloodDonorDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250727072317_AddIsEligibleToBloodDonor")]
+    partial class AddIsEligibleToBloodDonor
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,6 +54,9 @@ namespace BloodDonor.NewProject.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsEligible")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime?>("LastDonationDate")
                         .HasColumnType("datetime2");
 
@@ -74,6 +80,7 @@ namespace BloodDonor.NewProject.Migrations
                             DateOfBirth = new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "John@gmail.com",
                             FullName = "John Doe",
+                            IsEligible = false,
                             LastDonationDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Weight = 65f
                         },
@@ -86,6 +93,7 @@ namespace BloodDonor.NewProject.Migrations
                             DateOfBirth = new DateTime(1985, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "Jane@gmail.com",
                             FullName = "Jane Smith",
+                            IsEligible = false,
                             LastDonationDate = new DateTime(2024, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Weight = 68f
                         });

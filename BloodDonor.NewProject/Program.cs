@@ -1,6 +1,8 @@
+using BloodDonor.NewProject.Configuration;
 using BloodDonor.NewProject.Data;
 using BloodDonor.NewProject.Data.UnitOfWork;
 using BloodDonor.NewProject.Mapping;
+using BloodDonor.NewProject.Middleware;
 using BloodDonor.NewProject.Repositories.Implementations;
 using BloodDonor.NewProject.Repositories.Interfaces;
 using BloodDonor.NewProject.Services.Implementataions;
@@ -16,17 +18,6 @@ builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
 builder.Services.AddDbContext<BloodDonorDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> Stashed changes
-
-=======
-builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
->>>>>>> Isuue
 builder.Services.AddScoped<IBloodDonorRepository, BloodDonorRepository>();
 builder.Services.AddScoped<IBloodDonorService, BloodDonorService>();
 builder.Services.AddTransient<IFileService, FileService>();
@@ -34,26 +25,35 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IDonationRepository, DonationRepository>();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
+builder.Configuration
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true,reloadOnChange:true);
+    builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("MailSettings"));
 
+builder.Services.AddOptions<EmailSettings>()
+    .Bind(builder.Configuration.GetSection("EmailSettings"))
+    .ValidateDataAnnotations()
+    .ValidateOnStart();
 
-<<<<<<< HEAD
->>>>>>> Stashed changes
-=======
->>>>>>> Isuue
 var app = builder.Build();
 
 
 
-// Configure the HTTP request pipeline.
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
 app.UseRouting();
+
+app.UseMiddleware<IPWhiteListingMiddleware>();
+
+app.UseMiddleware<RequestLoggingMiddleware>();
+
+
 
 app.UseAuthorization();
 

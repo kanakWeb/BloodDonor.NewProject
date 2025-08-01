@@ -7,7 +7,7 @@ namespace BloodDonor.NewProject.Models.Entities
 {
     public class BloodDonorEntity : BaseEntity
     {
-       
+
         public required string FullName { get; set; }
         [Phone]
         [Length(10,15)]
@@ -28,7 +28,7 @@ namespace BloodDonor.NewProject.Models.Entities
       
 
        public Collection<Donation> Donations { get; set; } = new Collection<Donation>();
-       
+   
     }
 
 

@@ -21,7 +21,7 @@ namespace BloodDonor.NewProject.Repositories.Implementations
 
         public void Delete(T donor)
         {
-            throw new NotImplementedException();
+            _dbSet.Remove(donor);
         }
 
         public async Task<List<T>> GetAllAsync()
@@ -32,6 +32,11 @@ namespace BloodDonor.NewProject.Repositories.Implementations
         public async Task<T?> GetDonorByIdAsync(int? id)
         {
             return await _dbSet.FindAsync(id);
+        }
+
+        public IQueryable<T> Query()
+        {
+            return _dbSet.AsQueryable().AsNoTracking();
         }
 
         public void Update(T donor)

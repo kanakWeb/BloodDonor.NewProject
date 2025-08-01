@@ -10,5 +10,6 @@ namespace BloodDonor.NewProject.Repositories.Interfaces
         void Add(T donor);
         void Update(T donor);
         void Delete(T donor);
+        IQueryable<T> Query();
     }
 }
