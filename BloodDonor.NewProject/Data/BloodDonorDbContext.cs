@@ -1,9 +1,12 @@
 ﻿using BloodDonor.NewProject.Models.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.General;
 
 namespace BloodDonor.NewProject.Data
 {
-    public class BloodDonorDbContext : DbContext
+    public class BloodDonorDbContext : IdentityDbContext<IdentityUser>
     {
 
         public BloodDonorDbContext(DbContextOptions<BloodDonorDbContext> options) : base(options)
@@ -45,5 +48,6 @@ namespace BloodDonor.NewProject.Data
 
                 }); // Initial data seeding can be done here if needed
           }      
+        
     }
 }

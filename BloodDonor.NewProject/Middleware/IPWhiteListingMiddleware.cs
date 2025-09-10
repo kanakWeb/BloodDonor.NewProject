@@ -14,7 +14,11 @@ public class IPWhiteListingMiddleware
         _next = next;
         _allowedIPs = configuration.GetSection("AllowedIPs").Get<List<string>>() ?? new List<string>();
         var mailSettings = configuration.GetSection("MailSettings").Get<EmailSettings>();
-        monitor.OnChange(settings => _mailSettings = settings);
+        monitor.OnChange(settings =>
+        {
+            Console.WriteLine("Mail settings changed");
+            _mailSettings = settings;
+            });
 
     }
 

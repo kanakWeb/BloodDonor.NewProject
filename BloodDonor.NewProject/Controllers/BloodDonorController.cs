@@ -6,6 +6,7 @@ using BloodDonor.NewProject.Models.ViewModel;
 using BloodDonor.NewProject.Repositories.Interfaces;
 using BloodDonor.NewProject.Services.Interfaces;
 using BloodDonor.NewProject.Services.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Drawing;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace BloodDonor.NewProject.Controllers
 {
-   
+    [Authorize]
     public class BloodDonorController : Controller 
     {
       
@@ -35,6 +36,8 @@ namespace BloodDonor.NewProject.Controllers
             _configuration = configuration;
         }
 
+     
+        [AllowAnonymous]
         public async Task<IActionResult> Index([FromQuery]FilterDonorModel filter)
         {
             var dbconectionString = _configuration.GetConnectionString("DefaultConnection");
@@ -43,6 +46,7 @@ namespace BloodDonor.NewProject.Controllers
             return View(donorViewModels);
         }
 
+        [Authorize]
         public IActionResult Create()
         {
             return View();
@@ -70,7 +74,7 @@ namespace BloodDonor.NewProject.Controllers
             }
           
 
-           var donorViewModel = _mapper.Map<BloodDonorEntity>(donor);
+           var donorViewModel = _mapper.Map<BloodDonorListViewModel>(donor);
             return View(donorViewModel);
         }
 
@@ -101,6 +105,8 @@ namespace BloodDonor.NewProject.Controllers
             await _bloodDonorService.UpdateAsync(donorEntity);
             return RedirectToAction("Index");
         }
+
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> DeleteAsync(int id)
         {
             var donor =await _bloodDonorService.GetDonorByIdAsync(id);
